@@ -1,12 +1,12 @@
 /*
  * Copyright 2014 Nomad Consulting Limited
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -82,14 +82,15 @@ public abstract class EntityHome<E, PK extends Serializable> implements Serializ
 
         return entity;
     }
-    
+
+
     public boolean isManaged() {
         return id != null;
     }
 
 
     public void update() {
-        // its a hack. I know it and you know it 
+        // its a hack. I know it and you know it
         // https://struberg.wordpress.com/2012/04/25/is-there-a-way-to-fix-the-jpa-entitymanager/
         entity = getEntityManager().merge(entity);
         save();
@@ -102,7 +103,7 @@ public abstract class EntityHome<E, PK extends Serializable> implements Serializ
 
 
     public void delete() {
-        // its a hack. I know it and you know it 
+        // its a hack. I know it and you know it
         // https://struberg.wordpress.com/2012/04/25/is-there-a-way-to-fix-the-jpa-entitymanager/
         entity = getEntityManager().merge(entity);
         getEntityManager().remove(entity);

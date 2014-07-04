@@ -8,6 +8,7 @@
        version="1.1" bean-discovery-mode="all">
 
     <interceptors>
-<!--         <class>nz.co.nomadconsulting.simplepersistence.TransactionInterceptor</class> -->
+<!--         <class>nz.co.nomadconsulting.simpleessentials.ConversationInterceptor</class> -->
+<!--         <class>nz.co.nomadconsulting.simpleessentials.TraceLevelLoggingInterceptor</class> -->
     </interceptors>
 </beans>
