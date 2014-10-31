@@ -45,7 +45,7 @@ public class ConversationInterceptor implements Serializable {
         final Method method = ctx.getMethod();
         if (method.isAnnotationPresent(Begin.class) && conversation.isTransient()) {
             conversation.begin();
-            log.fine("Beginning long running conversation" + conversation.getId());
+            log.fine("Beginning long running conversation " + conversation.getId());
         }
 
         try {
@@ -77,6 +77,6 @@ public class ConversationInterceptor implements Serializable {
 
     private void endConversation() {
         conversation.end();
-        log.fine("Ending long running conversation" + conversation.getId());
+        log.fine("Ending long running conversation " + conversation.getId());
     }
 }

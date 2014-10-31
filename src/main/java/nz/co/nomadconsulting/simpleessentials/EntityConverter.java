@@ -113,5 +113,11 @@ public class EntityConverter implements Converter, Serializable {
                 return false;
             return true;
         }
+
+
+        @Override
+        public String toString() {
+            return "Identifier [clazz=" + clazz + ", id=" + id + "]";
+        }
     }
 }
