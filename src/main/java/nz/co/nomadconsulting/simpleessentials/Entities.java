@@ -24,12 +24,13 @@ public class Entities {
         }
     }
     
-    private static String getIdProperty(final Class<?> entityClass, final EntityManager em) {
+
+    public static <S> String getIdProperty(final Class<S> entityClass, final EntityManager em) {
         String idProperty = null;
         final Metamodel metamodel = em.getMetamodel();
-        final EntityType entity = metamodel.entity(entityClass);
-        final Set<SingularAttribute> singularAttributes = entity.getSingularAttributes();
-        for (final SingularAttribute singularAttribute : singularAttributes) {
+        final EntityType<S> entity = metamodel.entity(entityClass);
+        final Set<SingularAttribute<? super S, ?>> singularAttributes = entity.getSingularAttributes();
+        for (final SingularAttribute<?, ?> singularAttribute : singularAttributes) {
             if (singularAttribute.isId()) {
                 idProperty = singularAttribute.getName();
                 break;
