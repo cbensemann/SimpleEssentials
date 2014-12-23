@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>nz.co.nomadconsulting</groupId>
+  <artifactId>simple-essentials</artifactId>
+  <versioning>
+    <versions>
+      <version>0.0.1-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20141223031155</lastUpdated>
+  </versioning>
+</metadata>
