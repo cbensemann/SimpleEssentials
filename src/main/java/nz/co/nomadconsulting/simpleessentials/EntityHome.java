@@ -121,6 +121,12 @@ public abstract class EntityHome<E, PK extends Serializable> implements Serializ
     protected void clearEntities() {
         entities = null;
     }
+    
+    
+    protected void clear() {
+        entity = null;
+        id = null;
+    }
 
 
     protected String listQuery() {
