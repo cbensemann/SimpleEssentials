@@ -22,7 +22,7 @@ import java.util.ResourceBundle;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
-import javax.faces.component.UIInput;
+import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -38,15 +38,21 @@ public class FacesMessages implements Serializable {
     private transient FacesContext facesContext;
 
 
-    public void postFieldMessage(final String subjectMessageKey, final Object subjectParams[], final Severity severity, final String fieldId) {
-        this.postFieldMessage(subjectMessageKey, subjectParams, null, null, severity, fieldId);
+    public void postMessage(final String subjectMessageKey, final Severity severity, final String clientId, final Object... subjectParams) {
+        this.postMessageFor(subjectMessageKey, subjectParams, null, null, severity, clientId);
     }
 
 
-    public void postFieldMessage(final String subjectMessageKey, final Object subjectParams[], final String detailMessageKey,
+    private void postFieldMessage(final String subjectMessageKey, final Object subjectParams[], final String detailMessageKey,
             final Object detailParams[], final Severity severity, final String fieldId) {
         final UIViewRoot viewRoot = facesContext.getViewRoot();
-        final UIInput uiField = (UIInput) viewRoot.findComponent(fieldId);
+        final UIComponent uiField = viewRoot.findComponent(fieldId);
+        postMessageFor(subjectMessageKey, subjectParams, detailMessageKey, detailParams, severity, uiField.getClientId());
+    }
+
+
+    private void postMessageFor(final String subjectMessageKey, final Object[] subjectParams, final String detailMessageKey,
+            final Object[] detailParams, final Severity severity, final String clientId) {
         final Locale myLocale = facesContext.getExternalContext().getRequestLocale();
         final ResourceBundle myResources = ResourceBundle.getBundle("messages", myLocale);
 
@@ -82,12 +88,12 @@ public class FacesMessages implements Serializable {
             throw new RuntimeException("Attempt to post filed message with no subject or detail");
         }
         fieldMessage.setSeverity(severity);
-        facesContext.addMessage(uiField.getClientId(), fieldMessage);
+        facesContext.addMessage(clientId, fieldMessage);
     }
 
 
-    public void postFieldMessage(final String subjectMessageKey, final Severity severity, final String fieldId) {
-        this.postFieldMessage(subjectMessageKey, null, null, null, severity, fieldId);
+    public void postFieldMessage(final String subjectMessageKey, final Severity severity, final String fieldId, final Object... subjectParams) {
+        this.postFieldMessage(subjectMessageKey, subjectParams, null, null, severity, fieldId);
     }
 
 
@@ -98,7 +104,7 @@ public class FacesMessages implements Serializable {
     }
 
 
-    public void postGlobalMessage(final String subjectMessageKey, final Object subjectParams[], final String detailMessageKey,
+    private void postGlobalMessage(final String subjectMessageKey, final Object subjectParams[], final String detailMessageKey,
             final Object detailParams[], final Severity severity) {
         final Locale myLocale = facesContext.getExternalContext().getRequestLocale();
         final ResourceBundle myResources = ResourceBundle.getBundle("messages", myLocale);

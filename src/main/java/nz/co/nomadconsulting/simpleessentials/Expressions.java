@@ -22,6 +22,8 @@ import javax.el.CompositeELResolver;
 import javax.el.ELContext;
 import javax.el.ELContextEvent;
 import javax.el.ExpressionFactory;
+import javax.el.ValueExpression;
+import javax.el.ValueReference;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
 
@@ -79,9 +81,13 @@ public class Expressions {
 
 
     public <T> T evaluateValueExpression(final String expression, final Class<T> expectedType) {
-        final Object result = getExpressionFactory()
-                .createValueExpression(context, expression, expectedType).getValue(context);
+        final Object result = getExpressionFactory().createValueExpression(context, expression, expectedType).getValue(context);
         return result != null ? expectedType.cast(result) : null;
+    }
+    
+    
+    public ValueReference getValueExpression(final ValueExpression valueExpression) {
+        return valueExpression.getValueReference(context);
     }
 
 
@@ -91,20 +97,16 @@ public class Expressions {
     }
 
 
-    public <T> T evaluateMethodExpression(final String expression,
-            final Class<T> expectedReturnType,
-            final Object[] params,
+    public <T> T evaluateMethodExpression(final String expression, final Class<T> expectedReturnType, final Object[] params,
             final Class<?>[] expectedParamTypes) {
-        final Object result = getExpressionFactory()
-                .createMethodExpression(context, expression, expectedReturnType,
-                        expectedParamTypes).invoke(context, params);
+        final Object result = getExpressionFactory().createMethodExpression(context, expression, expectedReturnType, expectedParamTypes)
+                .invoke(context, params);
         return result != null ? expectedReturnType.cast(result) : null;
     }
 
 
     public <T> T evaluateMethodExpression(final String expression, final Class<T> expectedReturnType) {
-        return evaluateMethodExpression(
-                expression, expectedReturnType, new Object[0], new Class[0]);
+        return evaluateMethodExpression(expression, expectedReturnType, new Object[0], new Class[0]);
     }
 
 
@@ -115,9 +117,7 @@ public class Expressions {
 
 
     public <T> T evaluateMethodExpression(final String expression, final Object... params) {
-        final Object result = evaluateMethodExpression(
-                expression, Object.class, params, new Class[params.length]
-                );
+        final Object result = evaluateMethodExpression(expression, Object.class, params, new Class[params.length]);
         return result != null ? Reflections.<T> cast(result) : null;
     }
 
@@ -128,9 +128,7 @@ public class Expressions {
 
 
     public <T> void addVariableValue(final String name, final Class<T> type, final T value) {
-        getContext().getVariableMapper().setVariable(
-                name, getExpressionFactory().createValueExpression(value, type)
-                );
+        getContext().getVariableMapper().setVariable(name, getExpressionFactory().createValueExpression(value, type));
     }
 
 
